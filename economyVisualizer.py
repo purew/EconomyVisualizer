@@ -18,8 +18,9 @@ if __name__ == '__main__':
 	for transaction in transactions:
 		db.addTransaction(transaction)
 	
+	unclassified = db.getUnclassifiedTransactions()
 	
-	transactions = categorizer.assignCategories( db, transactions )
+	transactions = categorizer.assignCategories( db, unclassified )
 	
 	
 	

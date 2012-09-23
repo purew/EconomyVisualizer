@@ -12,6 +12,15 @@ class database:
 		#self.dbcurection = 0
 		self.initializeDatabase()
 		
+		# Transaction column id's
+		self.tid=0  
+		self.tdate=1
+		self.tdesc=2
+		self.tcost=3
+		self.tbal=4
+		self.tcat=5
+		self.tcheck=6
+		
 	def addTransaction(self, transaction):
 		""" Adds a transaction to database if it not already exists """
 		
@@ -56,6 +65,11 @@ class database:
 		if response == None:
 			self.cur.execute('''CREATE TABLE assignedCategories (id INTEGER, description TEXT)''')
 		
+		
+	def getUnclassifiedTransactions(self):
+		""" Return all rows of unclassified transactions """
+		self.cur.execute('SELECT * FROM transactions WHERE category=-1')
+		return self.cur.fetchall()
 		
 	def getManualClassifications( self ):
 		""" Retrieve list of manual classifications """
