@@ -1,4 +1,5 @@
 
+#include <iostream>
 
 #include <QStringList>
 #include <QPushButton>
@@ -14,36 +15,56 @@ std::list<Transaction> SplitterDialog::splitIntoTransactions(QString str)
 
 	QStringList lines = str.split("\n", QString::SkipEmptyParts);
 
-	tableWidget->setRowCount(5);
-
+	int columns = 0;
 	int row=0;
+
 	QStringList::iterator line = lines.begin();
 	for (;line != lines.end(); ++line)
 	{
 
 		QStringList components = (*line).split("\t",QString::SkipEmptyParts);
-		if (tableWidget->columnCount() == 0)
-			tableWidget->setColumnCount(components.size());
 
-		int col=0;
-		QStringList::iterator part = components.begin();
-		for (;part != components.end(); ++part)
+		if (columns==0)
 		{
-			QTableWidgetItem *newItem = new QTableWidgetItem(*part);
-			tableWidget->setItem(row,col, newItem);
-			col++;
+			if (components.size()>0)
+			{
+				columns = components.size();
+
+
+				std::cout << lines.size()<<std::endl;
+				std::cout << "Initializing "<<columns<<" columns\n";
+
+				// Initialize columns
+				for (int i=0; i<columns; ++i)
+				{
+					columnLayouts.push_back(new QVBoxLayout());
+
+					columnComboBox.push_back(new QComboBox());
+					columnComboBox[i]->addItems(columnTypes);
+					columnLayouts[i]->addWidget(columnComboBox[i]);
+
+					textColumns.push_back(new QPlainTextEdit());
+					textColumns[i]->setReadOnly(true);
+					columnLayouts[i]->addWidget(textColumns[i]);
+
+					hlayoutUpper->addLayout(columnLayouts[i]);
+				}
+			}
+		}
+
+
+		for (int col=0; col<columns && col<components.size(); ++col)
+		{
+			textColumns[col]->appendPlainText(components[col]);
 		}
 		row++;
+
 		//Transaction t;
 		//t.transactionDate = QDateTime::fromString(components[0], "yy-mm-dd");
 
 	}
 
-	tableWidget->resize(1,1);
-	int w = tableWidget->columnWidth(0)*tableWidget->columnCount()+20;
-	int h = tableWidget->rowHeight(0)*tableWidget->rowCount()+27;
-	tableWidget->setMaximumSize(QSize(w,h));
-	tableWidget->setMinimumSize(tableWidget->maximumSize());
+
 
 	show();
 	raise();
@@ -52,27 +73,53 @@ std::list<Transaction> SplitterDialog::splitIntoTransactions(QString str)
 	return transactionList;
 }
 
+void SplitterDialog::formatUserData()
+{
+	ClassifyDialog classifyDialog;
+
+	// Todo: This implementation is crude.
+	// It's possible to forget or make duplicate choices.
+	for (unsigned i=0; i<columnComboBox.size(); ++i)
+	{
+		if (columnComboBox[i]->currentIndex() == indexTransactionDate)
+			classifyDialog.setTextDate( textColumns[i]->toPlainText() );
+
+		if (columnComboBox[i]->currentIndex() == indexTransactionDescription)
+			classifyDialog.setTextDescription( textColumns[i]->toPlainText() );
+
+		if (columnComboBox[i]->currentIndex() == indexTransactionAmount)
+			classifyDialog.setTextAmount( textColumns[i]->toPlainText() );
+
+	}
+}
+
 SplitterDialog::SplitterDialog(QWidget *parent)
 	: QDialog(parent)
 {
 
-	tableWidget = new QTableWidget(this);
-	btOk = new QPushButton(tr("&Ok"));
+	btOk = new QPushButton(tr("&Next"));
+	QObject::connect(btOk,SIGNAL(clicked()), this, SLOT(formatUserData()));
 
 	btCancel = new QPushButton(tr("&Cancel"));
 	QObject::connect(btCancel,SIGNAL(clicked()), this, SLOT(reject()));
 
-	hlayout = new QHBoxLayout();
-	hlayout->addWidget(btOk);
-	hlayout->addWidget(btCancel);
+	hlayoutUpper = new QHBoxLayout();
+
+	hlayoutLower = new QHBoxLayout();
+	hlayoutLower->addWidget(btOk);
+	hlayoutLower->addWidget(btCancel);
 
 	vlayout = new QVBoxLayout();
-	vlayout->addWidget(tableWidget);
-	vlayout->addLayout(hlayout);
-
-
+	vlayout->addLayout(hlayoutUpper);
+	vlayout->addLayout(hlayoutLower);
 
 	setLayout(vlayout);
+
+
+	columnTypes.append( tr("None"));
+	columnTypes.append( tr("Date"));
+	columnTypes.append( tr("Description"));
+	columnTypes.append( tr("Amount"));
 }
 
 SplitterDialog::~SplitterDialog()
@@ -81,3 +128,21 @@ SplitterDialog::~SplitterDialog()
 	delete btOk;
 	delete btCancel;*/
 };
+
+
+
+
+void ClassifyDialog::setTextDate( const QString text)
+{
+	std::cout << "Setting date\n";
+}
+
+void ClassifyDialog::setTextDescription( const QString text)
+{
+	std::cout << "Setting Description\n";
+}
+
+void ClassifyDialog::setTextAmount( const QString text)
+{
+	std::cout << "Setting Amount\n";
+}

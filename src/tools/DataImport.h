@@ -3,14 +3,17 @@
 #define DATAIMPORT_H_
 
 #include <list>
+#include <vector>
 #include <QString>
 #include <QDateTime>
 #include <QDialog>
 #include <QWidget>
-#include <QTableWidget>
+#include <QPlainTextEdit>
 #include <QLayout>
+#include <QComboBox>
 
 #include "Transaction.h"
+
 
 
 
@@ -30,13 +33,44 @@ public:
 
 private:
 
-	QTableWidget *tableWidget;
+	std::vector<QPlainTextEdit*> textColumns;
+	std::vector<QVBoxLayout*> columnLayouts;
+	std::vector<QComboBox*> columnComboBox;
 
 	QPushButton *btOk;
 	QPushButton *btCancel;
 
-	QHBoxLayout *hlayout;
-	QVBoxLayout *vlayout ;
+	QHBoxLayout *hlayoutUpper;
+	QHBoxLayout *hlayoutLower;
+	QVBoxLayout *vlayout;
+
+	QStringList columnTypes;
+
+public slots:
+	void formatUserData();
+
+};
+
+
+
+/** Dialog window responsible for helping user classify transactions */
+class ClassifyDialog : public QDialog
+{
+	Q_OBJECT
+
+public:
+
+	ClassifyDialog( QWidget * parent = 0 ) {};
+	~ClassifyDialog() {};
+
+	void setTextDate( const QString text);
+	void setTextDescription( const QString text );
+	void setTextAmount( const QString text );
+
+
+private:
+
+public slots:
 
 };
 

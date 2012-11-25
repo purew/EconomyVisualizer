@@ -5,6 +5,12 @@
 #include <QDateTime>
 
 
+const int indexTransactionDate = 1;
+const int indexTransactionDescription = 2;
+const int indexTransactionAmount = 3;
+
+
+
 class Transaction
 {
 public:
