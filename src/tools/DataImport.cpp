@@ -1,10 +1,10 @@
 
 #include <iostream>
 
-#include <QStringList>
-#include <QPushButton>
-#include <QMessageBox>
-#include <QLabel>
+#include <QtCore/QStringList>
+#include <QtGui/QPushButton>
+#include <QtGui/QMessageBox>
+#include <QtGui/QLabel>
 
 #include "DataImport.h"
 

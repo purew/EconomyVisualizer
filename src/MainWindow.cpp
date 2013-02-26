@@ -1,8 +1,8 @@
 
-#include <QHBoxLayout>
-#include <QPushButton>
-#include <QLabel>
-#include <QFile>
+#include <QtGui/QHBoxLayout>
+#include <QtGui/QPushButton>
+#include <QtGui/QLabel>
+#include <QtCore/QFile>
 
 #include <iostream>
 

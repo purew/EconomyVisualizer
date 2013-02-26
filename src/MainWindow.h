@@ -3,9 +3,9 @@
 #ifndef MAINWINDOW_H_
 #define MAINWINDOW_H_
 
-#include <QtGui>
-#include <QPushButton>
-#include <QWidget>
+#include <QtGui/QtGui>
+#include <QtGui/QPushButton>
+#include <QtGui/QWidget>
 
 #include "tools/DataImport.h"
 

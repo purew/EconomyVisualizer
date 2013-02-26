@@ -1,6 +1,6 @@
 
 
-#include <QDir>
+#include <QtCore/QDir>
 #include "DatabaseManager.h"
 
 

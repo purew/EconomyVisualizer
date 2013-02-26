@@ -4,13 +4,13 @@
 
 #include <list>
 #include <vector>
-#include <QString>
-#include <QDateTime>
-#include <QDialog>
-#include <QWidget>
-#include <QPlainTextEdit>
-#include <QLayout>
-#include <QComboBox>
+#include <QtCore/QString>
+#include <QtCore/QDateTime>
+#include <QtGui/QDialog>
+#include <QtGui/QWidget>
+#include <QtGui/QPlainTextEdit>
+#include <QtGui/QLayout>
+#include <QtGui/QComboBox>
 
 #include "Transaction.h"
 

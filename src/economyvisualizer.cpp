@@ -1,4 +1,4 @@
-#include <QtGui>
+#include <QtGui/QtGui>
 
 
 #include "tools/Transaction.h"
@@ -13,7 +13,7 @@ int main(int argc, char *argv[])
     MainWindow mainWin(&app);
     mainWin.show();
 
-    mainWin.openStatement("data/data.dump");
+   // mainWin.openStatement("data/data.dump");
 
     return app.exec();
 }
