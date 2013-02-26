@@ -63,14 +63,19 @@ public:
 	ClassifyDialog( QWidget * parent = 0 ) {};
 	~ClassifyDialog() {};
 
-	void setTextDate( const QString text);
-	void setTextDescription( const QString text );
-	void setTextAmount( const QString text );
-
+	void setTextDate( const QString text) {textDate = text;};
+	void setTextDescription( const QString text ) {textDescription = text;};
+	void setTextAmount( const QString text ) {textAmount = text;};
 
 private:
 
+	QString textDate;
+	QString textDescription;
+	QString textAmount;
+
 public slots:
+
+	int exec();
 
 };
 

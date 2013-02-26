@@ -3,6 +3,8 @@
 
 #include <QStringList>
 #include <QPushButton>
+#include <QMessageBox>
+#include <QLabel>
 
 #include "DataImport.h"
 
@@ -75,7 +77,7 @@ std::list<Transaction> SplitterDialog::splitIntoTransactions(QString str)
 
 void SplitterDialog::formatUserData()
 {
-	ClassifyDialog classifyDialog;
+	ClassifyDialog classifyDialog(this);
 
 	// Todo: This implementation is crude.
 	// It's possible to forget or make duplicate choices.
@@ -91,6 +93,10 @@ void SplitterDialog::formatUserData()
 			classifyDialog.setTextAmount( textColumns[i]->toPlainText() );
 
 	}
+
+	classifyDialog.exec();
+
+
 }
 
 SplitterDialog::SplitterDialog(QWidget *parent)
@@ -130,19 +136,26 @@ SplitterDialog::~SplitterDialog()
 };
 
 
-
-
-void ClassifyDialog::setTextDate( const QString text)
+int ClassifyDialog::exec()
 {
-	std::cout << "Setting date\n";
-}
+	std::cout << "Classify...\n";
 
-void ClassifyDialog::setTextDescription( const QString text)
-{
-	std::cout << "Setting Description\n";
-}
+	if (   textDate.size() == 0
+		|| textDescription.size() == 0
+		|| textAmount.size() == 0 )
+	{
+		QMessageBox popup(this);
+		popup.setText( tr("Category seems empty"));
+		popup.exec();
 
-void ClassifyDialog::setTextAmount( const QString text)
-{
-	std::cout << "Setting Amount\n";
+		return QDialog::Rejected;
+	}
+
+
+	QLabel lbDate;
+	QLabel lbDescription;
+	QLabel lbAmount;
+
+	return QDialog::Accepted;
+
 }

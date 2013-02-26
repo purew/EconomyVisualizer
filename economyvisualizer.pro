@@ -4,16 +4,20 @@ TARGET = economyvisualizer
 DEPENDPATH += . src
 INCLUDEPATH += .
 
-# Input
+# Configuration
 CONFIG += qt debug
+QT += sql
+ 
  
 HEADERS += src/MainWindow.h \
 			src/tools/DataImport.h \
-			src/tools/Transaction.h
+			src/tools/Transaction.h \
+			src/tools/DatabaseManager.h
 SOURCES += src/economyvisualizer.cpp \
 			src/MainWindow.cpp \
 			src/tools/DataImport.cpp \
-			src/tools/Transaction.cpp
+			src/tools/Transaction.cpp \
+			src/tools/DatabaseManager.cpp
 
 CONFIG(debug, debug|release) {
 	DESTDIR = Debug
