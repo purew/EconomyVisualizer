@@ -5,6 +5,7 @@
 #include <QtGui/QPushButton>
 #include <QtGui/QMessageBox>
 #include <QtGui/QLabel>
+#include <QStandardItem>
 
 #include "DataImport.h"
 
@@ -16,6 +17,10 @@ std::list<Transaction> SplitterDialog::splitIntoTransactions(QString str)
 	std::list<Transaction> transactionList;
 
 	QStringList lines = str.split("\n", QString::SkipEmptyParts);
+
+	QStandardItemModel *mytablemodel = new QStandardItemModel();
+	int maxColumns = 6;
+	mytablemodel->setColumnCount(maxColumns);
 
 	int columns = 0;
 	int row=0;
@@ -39,7 +44,7 @@ std::list<Transaction> SplitterDialog::splitIntoTransactions(QString str)
 				// Initialize columns
 				for (int i=0; i<columns; ++i)
 				{
-					columnLayouts.push_back(new QVBoxLayout());
+				/*	columnLayouts.push_back(new QVBoxLayout());
 
 					columnComboBox.push_back(new QComboBox());
 					columnComboBox[i]->addItems(columnTypes);
@@ -49,7 +54,7 @@ std::list<Transaction> SplitterDialog::splitIntoTransactions(QString str)
 					textColumns[i]->setReadOnly(true);
 					columnLayouts[i]->addWidget(textColumns[i]);
 
-					hlayoutUpper->addLayout(columnLayouts[i]);
+					hlayoutUpper->addLayout(columnLayouts[i]); */
 				}
 			}
 		}
@@ -57,7 +62,9 @@ std::list<Transaction> SplitterDialog::splitIntoTransactions(QString str)
 
 		for (int col=0; col<columns && col<components.size(); ++col)
 		{
-			textColumns[col]->appendPlainText(components[col]);
+			QStandardItem *item = new QStandardItem(components[col]);
+			mytablemodel->setItem(row, col, item);
+			//textColumns[col]->appendPlainText(components[col]);
 		}
 		row++;
 
@@ -66,7 +73,8 @@ std::list<Transaction> SplitterDialog::splitIntoTransactions(QString str)
 
 	}
 
-
+	transactionTable->setModel(mytablemodel);
+	transactionTable->show();
 
 	show();
 	raise();
@@ -109,7 +117,11 @@ SplitterDialog::SplitterDialog(QWidget *parent)
 	btCancel = new QPushButton(tr("&Cancel"));
 	QObject::connect(btCancel,SIGNAL(clicked()), this, SLOT(reject()));
 
+	transactionTable = new QTableView();
+
 	hlayoutUpper = new QHBoxLayout();
+
+	hlayoutUpper->addWidget(transactionTable);
 
 	hlayoutLower = new QHBoxLayout();
 	hlayoutLower->addWidget(btOk);
@@ -120,7 +132,6 @@ SplitterDialog::SplitterDialog(QWidget *parent)
 	vlayout->addLayout(hlayoutLower);
 
 	setLayout(vlayout);
-
 
 	columnTypes.append( tr("None"));
 	columnTypes.append( tr("Date"));

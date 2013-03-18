@@ -11,6 +11,7 @@
 #include <QtGui/QPlainTextEdit>
 #include <QtGui/QLayout>
 #include <QtGui/QComboBox>
+#include <QTableView>
 
 #include "Transaction.h"
 
@@ -45,6 +46,8 @@ private:
 	QVBoxLayout *vlayout;
 
 	QStringList columnTypes;
+
+	QTableView *transactionTable;
 
 public slots:
 	void formatUserData();
