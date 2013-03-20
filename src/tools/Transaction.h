@@ -2,6 +2,7 @@
 #ifndef TRANSACTION_H_
 #define TRANSACTION_H_
 
+#include <QString>
 #include <QDateTime>
 
 
@@ -19,7 +20,10 @@ public:
 	QString description;
 	float amount;
 	float balance;
+	int primaryCategory;
+	int secondaryCategory;
 
+	QString toQString() {return QString(transactionDate.toString(QString("yy-MM-dd")));}
 private:
 
 };

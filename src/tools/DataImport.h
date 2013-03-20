@@ -4,6 +4,8 @@
 
 #include <list>
 #include <vector>
+#include <iostream>
+
 #include <QtCore/QString>
 #include <QtCore/QDateTime>
 #include <QtGui/QDialog>
@@ -12,6 +14,9 @@
 #include <QtGui/QLayout>
 #include <QtGui/QComboBox>
 #include <QTableView>
+#include <QStandardItem>
+#include <QMenu>
+#include <QAction>
 
 #include "Transaction.h"
 
@@ -34,6 +39,15 @@ public:
 
 private:
 
+	Transaction createTransaction( QStringList components );
+	bool eventFilter(QObject *, QEvent *);
+
+	QTableView *transactionTable;
+    QStandardItemModel *myTableModel;
+
+    std::vector<Transaction> transactions;
+
+    // GUI
 	std::vector<QPlainTextEdit*> textColumns;
 	std::vector<QVBoxLayout*> columnLayouts;
 	std::vector<QComboBox*> columnComboBox;
@@ -44,13 +58,12 @@ private:
 	QHBoxLayout *hlayoutUpper;
 	QHBoxLayout *hlayoutLower;
 	QVBoxLayout *vlayout;
-
 	QStringList columnTypes;
-
-	QTableView *transactionTable;
 
 public slots:
 	void formatUserData();
+
+	void setCategoryOfTransactionRow(QObject* args);
 
 };
 
@@ -80,6 +93,14 @@ public slots:
 
 	int exec();
 
+};
+
+class SplitterWndwMenuArgs : public QObject
+{
+public:
+	SplitterWndwMenuArgs(int  row,int category, QObject *parent=0);
+	~SplitterWndwMenuArgs() {;};
+	int row, category;
 };
 
 #endif
